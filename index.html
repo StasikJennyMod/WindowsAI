@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WindowsAI</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0078D4">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-container">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M3 12h18v2H3v-2zm0-4h18v2H3V8zm0 8h12v2H3v-2zM19 6v12h2V6h-2z'/%3E%3C/svg%3E" alt="WindowsAI" class="logo">
+                <h1>WindowsAI</h1>
+            </div>
+            <button class="settings-btn" id="settingsBtn">⚙️</button>
+        </header>
+
+        <div class="settings-panel hidden" id="settingsPanel">
+            <div class="settings-content">
+                <h2>Настройки API</h2>
+                
+                <div class="api-provider-selector">
+                    <label>Провайдер:</label>
+                    <select id="apiProvider">
+                        <option value="openai">OpenAI</option>
+                        <option value="gemini">Google Gemini</option>
+                        <option value="groq">Groq</option>
+                        <option value="openrouter">OpenRouter</option>
+                        <option value="anthropic">Anthropic</option>
+                        <option value="cohere">Cohere</option>
+                        <option value="deepseek">DeepSeek</option>
+                        <option value="mistral">Mistral AI</option>
+                    </select>
+                </div>
+
+                <div class="api-key-input">
+                    <label>API Key:</label>
+                    <input type="password" id="apiKey" placeholder="Введите ваш API ключ">
+                    <button class="save-key-btn" id="saveKey">Сохранить</button>
+                </div>
+
+                <div class="model-selector">
+                    <label>Модель:</label>
+                    <select id="modelSelect"></select>
+                </div>
+
+                <div class="api-status" id="apiStatus"></div>
+
+                <button class="close-settings" id="closeSettings">Закрыть</button>
+            </div>
+        </div>
+
+        <div class="chat-container" id="chatContainer">
+            <div class="messages" id="messages"></div>
+            
+            <div class="typing-indicator hidden" id="typingIndicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <button class="attach-btn" id="attachBtn">📎</button>
+            <textarea class="message-input" id="messageInput" placeholder="Напишите сообщение..." rows="1"></textarea>
+            <button class="send-btn" id="sendBtn">📤</button>
+        </div>
+
+        <div class="file-preview hidden" id="filePreview">
+            <span class="file-name" id="fileName"></span>
+            <button class="remove-file" id="removeFile">✕</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+                  </html>
