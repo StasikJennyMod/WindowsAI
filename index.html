@@ -2,82 +2,234 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>WindowsAI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>WindowsAI · Mobile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0078D4">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
-        <header class="app-header">
-            <div class="logo-container">
-                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M3 12h18v2H3v-2zm0-4h18v2H3V8zm0 8h12v2H3v-2zM19 6v12h2V6h-2z'/%3E%3C/svg%3E" alt="WindowsAI" class="logo">
-                <h1>WindowsAI</h1>
+    <div class="app">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span class="time">12:00</span>
+            <div class="status-icons">
+                <span class="material-icons">signal_cellular_alt</span>
+                <span class="material-icons">wifi</span>
+                <span class="material-icons">battery_full</span>
             </div>
-            <button class="settings-btn" id="settingsBtn">⚙️</button>
-        </header>
+        </div>
 
-        <div class="settings-panel hidden" id="settingsPanel">
-            <div class="settings-content">
-                <h2>Настройки API</h2>
+        <!-- Main Container -->
+        <div class="main-container">
+            <!-- Header with Glass Effect -->
+            <header class="header glass">
+                <div class="header-content">
+                    <div class="logo-area">
+                        <div class="windows-logo">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <h1>Windows<span>AI</span></h1>
+                    </div>
+                    <button class="icon-btn settings-trigger" id="settingsBtn">
+                        <span class="material-icons">settings</span>
+                    </button>
+                </div>
                 
-                <div class="api-provider-selector">
-                    <label>Провайдер:</label>
-                    <select id="apiProvider">
-                        <option value="openai">OpenAI</option>
-                        <option value="gemini">Google Gemini</option>
-                        <option value="groq">Groq</option>
-                        <option value="openrouter">OpenRouter</option>
-                        <option value="anthropic">Anthropic</option>
-                        <option value="cohere">Cohere</option>
-                        <option value="deepseek">DeepSeek</option>
-                        <option value="mistral">Mistral AI</option>
-                    </select>
+                <!-- Quick Model Switcher -->
+                <div class="quick-model-bar">
+                    <div class="model-chips" id="modelChips">
+                        <!-- Динамически заполняется -->
+                    </div>
                 </div>
+            </header>
 
-                <div class="api-key-input">
-                    <label>API Key:</label>
-                    <input type="password" id="apiKey" placeholder="Введите ваш API ключ">
-                    <button class="save-key-btn" id="saveKey">Сохранить</button>
+            <!-- Chat Area -->
+            <div class="chat-area" id="chatArea">
+                <div class="messages-container" id="messagesContainer">
+                    <!-- Welcome Message -->
+                    <div class="message-welcome">
+                        <div class="welcome-icon">
+                            <span class="material-icons">auto_awesome</span>
+                        </div>
+                        <h2>Добро пожаловать в WindowsAI</h2>
+                        <p>Выберите модель и начните общение</p>
+                        
+                        <!-- Quick Actions -->
+                        <div class="quick-actions">
+                            <button class="quick-action" data-provider="openai">
+                                <span class="material-icons">bolt</span>
+                                <span>OpenAI</span>
+                            </button>
+                            <button class="quick-action" data-provider="gemini">
+                                <span class="material-icons">psychology</span>
+                                <span>Gemini</span>
+                            </button>
+                            <button class="quick-action" data-provider="claude">
+                                <span class="material-icons">smart_toy</span>
+                                <span>Claude</span>
+                            </button>
+                            <button class="quick-action" data-provider="groq">
+                                <span class="material-icons">speed</span>
+                                <span>Groq</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="model-selector">
-                    <label>Модель:</label>
-                    <select id="modelSelect"></select>
+                
+                <!-- Typing Indicator -->
+                <div class="typing-indicator hidden" id="typingIndicator">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <span class="typing-text">AI печатает...</span>
                 </div>
+            </div>
 
-                <div class="api-status" id="apiStatus"></div>
-
-                <button class="close-settings" id="closeSettings">Закрыть</button>
+            <!-- Input Area -->
+            <div class="input-area glass" id="inputArea">
+                <!-- Attachment Preview -->
+                <div class="attachment-preview hidden" id="attachmentPreview">
+                    <div class="file-info">
+                        <span class="material-icons">description</span>
+                        <span class="file-name" id="fileName"></span>
+                    </div>
+                    <button class="icon-btn small" id="removeFile">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+                
+                <!-- Input Bar -->
+                <div class="input-bar">
+                    <button class="icon-btn attach-btn" id="attachBtn">
+                        <span class="material-icons">attach_file</span>
+                    </button>
+                    
+                    <div class="input-wrapper">
+                        <textarea 
+                            class="message-input" 
+                            id="messageInput" 
+                            placeholder="Напишите сообщение..."
+                            rows="1"
+                        ></textarea>
+                        
+                        <!-- Voice Input Button -->
+                        <button class="icon-btn voice-btn" id="voiceBtn">
+                            <span class="material-icons">mic</span>
+                        </button>
+                    </div>
+                    
+                    <button class="send-btn" id="sendBtn">
+                        <span class="material-icons">send</span>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="chat-container" id="chatContainer">
-            <div class="messages" id="messages"></div>
-            
-            <div class="typing-indicator hidden" id="typingIndicator">
-                <span></span>
-                <span></span>
-                <span></span>
+        <!-- Settings Modal -->
+        <div class="modal-overlay hidden" id="settingsModal">
+            <div class="modal-content glass">
+                <div class="modal-header">
+                    <h2>Настройки</h2>
+                    <button class="icon-btn close-modal" id="closeSettings">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <!-- API Provider Selection -->
+                    <div class="settings-section">
+                        <label class="section-label">
+                            <span class="material-icons">cloud</span>
+                            Провайдер
+                        </label>
+                        <div class="provider-grid" id="providerGrid">
+                            <!-- Динамически заполняется провайдерами -->
+                        </div>
+                    </div>
+                    
+                    <!-- API Key Input -->
+                    <div class="settings-section">
+                        <label class="section-label">
+                            <span class="material-icons">vpn_key</span>
+                            API Ключ
+                        </label>
+                        <div class="api-input-group">
+                            <div class="input-field">
+                                <input 
+                                    type="password" 
+                                    id="apiKey" 
+                                    placeholder="Введите ваш API ключ"
+                                    class="glass-input"
+                                >
+                                <button class="visibility-toggle" id="toggleKeyVisibility">
+                                    <span class="material-icons">visibility_off</span>
+                                </button>
+                            </div>
+                            <button class="btn-primary" id="saveKey">
+                                <span class="material-icons">check</span>
+                                Сохранить
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Model Selection -->
+                    <div class="settings-section">
+                        <label class="section-label">
+                            <span class="material-icons">model_training</span>
+                            Модель
+                        </label>
+                        <div class="model-list" id="modelList">
+                            <!-- Динамически заполняется моделями -->
+                        </div>
+                    </div>
+                    
+                    <!-- Connection Status -->
+                    <div class="connection-status hidden" id="connectionStatus">
+                        <span class="material-icons">check_circle</span>
+                        <span class="status-text">Подключено к OpenAI</span>
+                    </div>
+                </div>
+                
+                <!-- Quick Tips -->
+                <div class="modal-footer">
+                    <div class="tips">
+                        <span class="material-icons">tips_and_updates</span>
+                        <span>Ключи хранятся локально</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="input-container">
-            <button class="attach-btn" id="attachBtn">📎</button>
-            <textarea class="message-input" id="messageInput" placeholder="Напишите сообщение..." rows="1"></textarea>
-            <button class="send-btn" id="sendBtn">📤</button>
+        <!-- Context Menu -->
+        <div class="context-menu hidden" id="contextMenu">
+            <button class="context-item">
+                <span class="material-icons">content_copy</span>
+                Копировать
+            </button>
+            <button class="context-item">
+                <span class="material-icons">share</span>
+                Поделиться
+            </button>
+            <button class="context-item">
+                <span class="material-icons">delete</span>
+                Удалить
+            </button>
         </div>
 
-        <div class="file-preview hidden" id="filePreview">
-            <span class="file-name" id="fileName"></span>
-            <button class="remove-file" id="removeFile">✕</button>
-        </div>
+        <!-- Toast Notifications -->
+        <div class="toast-container" id="toastContainer"></div>
     </div>
 
     <script src="app.js"></script>
 </body>
-                  </html>
+    </html>
